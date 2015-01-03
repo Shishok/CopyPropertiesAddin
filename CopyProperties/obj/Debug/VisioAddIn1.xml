@@ -1,0 +1,157 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+CopyProperties
+</name>
+</assembly>
+<members>
+<member name="P:CopyProperties.My.Resources.Resources.ResourceManager">
+	<summary>
+  Возвращает кэшированный экземпляр ResourceManager, использованный этим классом.
+</summary>
+</member><member name="P:CopyProperties.My.Resources.Resources.Culture">
+	<summary>
+  Перезаписывает свойство CurrentUICulture текущего потока для всех
+  обращений к ресурсу с помощью этого класса ресурса со строгой типизацией.
+</summary>
+</member><member name="P:CopyProperties.My.Resources.Resources.Command1">
+	<summary>
+  Поиск локализованного ресурса типа System.Drawing.Icon, аналогичного (Значок).
+</summary>
+</member><member name="P:CopyProperties.My.Resources.Resources.Command1_Label">
+	<summary>
+  Ищет локализованную строку, похожую на command 1.
+</summary>
+</member><member name="P:CopyProperties.My.Resources.Resources.Command2">
+	<summary>
+  Поиск локализованного ресурса типа System.Drawing.Icon, аналогичного (Значок).
+</summary>
+</member><member name="P:CopyProperties.My.Resources.Resources.Command2_Label">
+	<summary>
+  Ищет локализованную строку, похожую на command 2.
+</summary>
+</member><member name="P:CopyProperties.My.Resources.Resources.Ribbon">
+	<summary>
+  Ищет локализованную строку, похожую на &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="OnRibbonLoad"&gt;
+  &lt;ribbon&gt;
+    &lt;tabs&gt;
+      &lt;tab idMso="TabHome"&gt;
+        &lt;group id="Group1" label="CopyProperties"&gt;
+
+          &lt;button id="Command1" size="large" getLabel="OnGetRibbonLabel" onAction="OnRibbonButtonClick" getEnabled="IsRibbonCommandEnabled" getImage="GetRibbonImage" /&gt;
+          &lt;button id="Command2" size="large" getLabel="OnGetRibbonLabel" onAction="OnRibbonButtonCli [остаток строки не уместился]";.
+</summary>
+</member><member name="P:CopyProperties.My.Resources.Resources.TogglePanel">
+	<summary>
+  Поиск локализованного ресурса типа System.Drawing.Icon, аналогичного (Значок).
+</summary>
+</member><member name="P:CopyProperties.My.Resources.Resources.TogglePanel_Label">
+	<summary>
+  Ищет локализованную строку, похожую на Toggle panel.
+</summary>
+</member><member name="T:CopyProperties.My.Resources.Resources">
+	<summary>
+  Класс ресурса со строгой типизацией для поиска локализованных строк и т.д.
+</summary>
+</member><member name="M:CopyProperties.PanelManager.TogglePanel(Microsoft.Office.Interop.Visio.Window)">
+ 
+ Shows or hides panel for the given Visio window.
+ 
+
+</member><member name="M:CopyProperties.PanelManager.IsPanelOpened(Microsoft.Office.Interop.Visio.Window)">
+ 
+ Returns true if panel is opened in the given Visio diagram window.
+ 
+
+</member><member name="T:CopyProperties.PanelManager">
+ 
+ Manages the list of all installed panels
+ 
+
+</member><member name="M:CopyProperties.Addin.OnCommand(System.String)">
+ 
+ Callback called by the UI manager when user clicks a button
+ Should do something meaninful wehn corresponding action is called.
+ 
+
+</member><member name="M:CopyProperties.Addin.IsCommandEnabled(System.String)">
+ 
+ Callback called by UI manager.
+ Should return if corresponding command shoudl be enabled in the user interface.
+ By default, all commands are enabled.
+ 
+
+</member><member name="M:CopyProperties.Addin.IsCommandChecked(System.String)">
+ 
+ Callback called by UI manager.
+ Should return if corresponding command (button) is pressed or not (makes sense for toggle buttons)
+ 
+
+</member><member name="M:CopyProperties.Addin.GetCommandLabel(System.String)">
+ 
+ Callback called by UI manager.
+ Returns a label associated with given command.
+ We assume for simplicity taht command labels are named simply named as [commandId]_Label (see resources)
+ 
+
+</member><member name="M:CopyProperties.Addin.GetCommandIcon(System.String)">
+ 
+ Returns a icon associated with given command.
+ We assume for simplicity that icon ids are named after command commandId.
+ 
+
+</member><member name="T:CopyProperties.PanelFrame.PanelFrameClosedEventHandler">
+ 
+ The event is triggered when user closes the panel using "x" button
+ 
+
+</member><member name="M:CopyProperties.PanelFrame.#ctor(System.Windows.Forms.Form)">
+ 
+ Constructs a new panel frame.
+ 
+
+</member><member name="M:CopyProperties.PanelFrame.DestroyWindow">
+ Destroys the panel frame along with the form.
+ 
+
+</member><member name="M:CopyProperties.PanelFrame.CreateWindow(Microsoft.Office.Interop.Visio.Window)">
+ Install the panel into given window (actually creates the form and shows it)
+ 
+
+</member><member name="T:CopyProperties.PanelFrame">
+ 
+ Integrates a winform in Visio.
+ Creates an anchor window for the given diagram window, and installs the specified form as a child in that panel.
+ 
+
+</member><member name="T:CopyProperties.Addin">
+ 
+ User interface manager for Visio 2010 and above
+ Creates and controls ribbon UI
+ 
+
+</member><member name="M:CopyProperties.ThisAddIn.#ctor(Microsoft.Office.Tools.Factory,System.IServiceProvider)">
+</member><member name="M:CopyProperties.ThisAddIn.Initialize">
+</member><member name="M:CopyProperties.ThisAddIn.FinishInitialization">
+</member><member name="M:CopyProperties.ThisAddIn.InitializeDataBindings">
+</member><member name="M:CopyProperties.ThisAddIn.InitializeCachedData">
+</member><member name="M:CopyProperties.ThisAddIn.InitializeData">
+</member><member name="M:CopyProperties.ThisAddIn.BindToData">
+</member><member name="M:CopyProperties.ThisAddIn.StartCaching(System.String)">
+</member><member name="M:CopyProperties.ThisAddIn.StopCaching(System.String)">
+</member><member name="M:CopyProperties.ThisAddIn.IsCached(System.String)">
+</member><member name="M:CopyProperties.ThisAddIn.BeginInitialization">
+</member><member name="M:CopyProperties.ThisAddIn.EndInitialization">
+</member><member name="M:CopyProperties.ThisAddIn.InitializeControls">
+</member><member name="M:CopyProperties.ThisAddIn.InitializeComponents">
+</member><member name="M:CopyProperties.ThisAddIn.NeedsFill(System.String)">
+</member><member name="T:CopyProperties.ThisAddIn">
+</member><member name="M:CopyProperties.Globals.#ctor">
+</member><member name="T:CopyProperties.Globals">
+</member><member name="M:CopyProperties.ThisRibbonCollection.#ctor(Microsoft.Office.Tools.Ribbon.RibbonFactory)">
+</member><member name="T:CopyProperties.ThisRibbonCollection">
+</member>
+</members>
+</doc>
