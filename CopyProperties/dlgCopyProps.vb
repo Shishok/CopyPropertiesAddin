@@ -175,27 +175,54 @@ err:
 
     Private Sub btnClipBoard_Click(sender As Object, e As EventArgs) Handles btnClipBoard.Click
         Dim shObj As Visio.Shape = winObj.Selection(1)
-        Dim strArrShapeData = {"RowName", "Label", "Promt", "Type", "Format", "Value", "SortKey", "Invisible", "Ask", "LangID", "Calendar"}
-        Dim intArrShapeData = {2, 1, 5, 3, 0, 4, 6, 7, 14, 15}
+        Dim strArrSectionData() As String = {""}
+        Dim intArrSectionData() As Integer = {0}
         Dim strTxt As String = ""
         Dim strActiveSection As String = Switch(intActiveSection = "242", "User-defined Cells", intActiveSection = "243", "Shape Data", intActiveSection = "244", "Hyperlinks, ", _
                                         intActiveSection = "240", "Actions", intActiveSection = "9", "Controls", intActiveSection = "247", "Action Tags")
+
+        Select Case intActiveSection
+            Case 242
+                strArrSectionData = {"RowName", "Value", "Promt"}
+                intArrSectionData = {0, 1}
+            Case 243
+                strArrSectionData = {"RowName", "Label", "Promt", "Type", "Format", "Value", "SortKey", "Invisible", "Ask", "LangID", "Calendar"}
+                intArrSectionData = {2, 1, 5, 3, 0, 4, 6, 7, 14, 15}
+            Case 244
+                strArrSectionData = {"RowName", "Description", "Address", "SubAddress", "ExtraInfo", "Frame", "SortKey", "NewWindow", "Default", "Invisible"}
+                intArrSectionData = {0, 1, 2, 3, 4, 15, 5, 7, 8}
+            Case 7
+                strArrSectionData = {"RowName", "X", "Y", "DirX / A", "DirY / B", "Type / C", "D"}
+                intArrSectionData = {0, 1, 2, 3, 4, 5}
+            Case 240
+                strArrSectionData = {"RowName", "Action", "Menu", "TagName", "ButtonFace", "SortKey", "Checked", "Disabled", "ReadOnly", "Invisible", "BeginGroup", "FlyoutChild"}
+                intArrSectionData = {3, 0, 14, 15, 16, 4, 5, 6, 7, 8, 9}
+            Case 9
+                strArrSectionData = {"RowName", "X", "Y", "X Dinamics", "Y Dinamics", "X Behavior", "Y Behavior", "CanGlue", "Tip"}
+                intArrSectionData = {0, 1, 2, 3, 4, 5, 6, 8}
+            Case 6
+                strArrSectionData = {"RowName", "X", "Y", "A", "B", "C", "D"}
+                intArrSectionData = {0, 1, 2, 3, 4, 5}
+            Case 247
+                strArrSectionData = {"RowName", "X", "Y", "TagName", "X Justify", "Y Justify", "DisplayMode", "ButtonFace", "Discription", "Disabled"}
+                intArrSectionData = {0, 1, 2, 3, 4, 5, 6, 15, 7}
+        End Select
 
         If ckbSectionsRows.Items.Count <> 0 Then
             strTxt = shObj.Name & " (" & shObj.NameU & ")" & ", "
             strTxt = strTxt & "Section - " & strActiveSection & ":" & vbCrLf
 
-            For j = 0 To UBound(strArrShapeData)
-                If j <> UBound(strArrShapeData) Then strTxt = strTxt & strArrShapeData(j) & vbTab
-                If j = UBound(strArrShapeData) Then strTxt = strTxt & strArrShapeData(j) & vbCrLf
+            For j = 0 To UBound(strArrSectionData)
+                If j <> UBound(strArrSectionData) Then strTxt = strTxt & strArrSectionData(j) & vbTab
+                If j = UBound(strArrSectionData) Then strTxt = strTxt & strArrSectionData(j) & vbCrLf
             Next
 
             For ind = 0 To ckbSectionsRows.Items.Count - 1
                 If ckbSectionsRows.GetItemChecked(ind) Then
-                    For j = 0 To UBound(intArrShapeData)
+                    For j = 0 To UBound(intArrSectionData)
                         If j = 0 Then strTxt = strTxt & ckbSectionsRows.Items(ind) & vbTab
-                        strTxt = strTxt & shObj.CellsSRC(intActiveSection, shObj.CellsRowIndex(ckbSectionsRows.Items(ind)), intArrShapeData(j)).FormulaU
-                        If j <> UBound(intArrShapeData) Then strTxt = strTxt & vbTab
+                        strTxt = strTxt & shObj.CellsSRC(intActiveSection, shObj.CellsRowIndex(ckbSectionsRows.Items(ind)), intArrSectionData(j)).FormulaU
+                        If j <> UBound(intArrSectionData) Then strTxt = strTxt & vbTab
                     Next
                     strTxt = strTxt & vbCr
                 End If
