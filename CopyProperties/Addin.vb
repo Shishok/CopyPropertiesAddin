@@ -114,7 +114,6 @@ errD:
 
     Sub UpdateUI()
         UpdateRibbon()
-    
     End Sub
     
 End Class

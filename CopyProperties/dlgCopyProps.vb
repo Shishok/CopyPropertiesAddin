@@ -23,6 +23,21 @@ Public Class dlgCopyProps
     End Sub
 
     Private Sub btn_OK_Click(sender As Object, e As EventArgs) Handles btn_OK.Click
+        Dim txtRE() As String = {"Для выполнения операции необходимо минимум два объекта! Операция прервана.",
+                                 "The operation requires a minimum of two objects! Operation aborted.",
+                                 "Ошибка при копировании формул секций:",
+                                 "Error when copying formulas sections:",
+                                 "Повторите попытку для этих секций.",
+                                 "Please try again for these sections.",
+                                 "CopyProperties Addin"}
+
+        If winObj.Selection.Count < 2 Then
+            If btnRuEng.Text = "Eng" Then MsgBox(txtRE(0), vbInformation + vbOKOnly, txtRE(6))
+            If btnRuEng.Text = "Ru" Then MsgBox(txtRE(1), vbInformation + vbOKOnly, txtRE(6))
+            Me.Close()
+            Exit Sub
+        End If
+
         If ckb_3.Checked Then Call CopyProp(ckb_3.Tag, ckbReplaceContent.Checked, ckbRemoveMissing.Checked)
         If ckb_4.Checked Then Call CopyProp(ckb_4.Tag, ckbReplaceContent.Checked, ckbRemoveMissing.Checked)
         If ckb_5.Checked Then Call CopyProp(ckb_5.Tag, ckbReplaceContent.Checked, ckbRemoveMissing.Checked)
@@ -33,12 +48,10 @@ Public Class dlgCopyProps
         If ckb_30.Checked Then Call CopyProp(ckb_30.Tag, ckbReplaceContent.Checked, ckbRemoveMissing.Checked)
 
         If strError <> "" Then
-            MsgBox("Ошибка при копировании формул секций:" & vbNewLine & _
-                   Strings.Left(strError, Strings.Len(strError) - 2) & vbNewLine & _
-                   "Повторите попытку для этих секций" _
-                   , vbInformation + vbOKOnly, "Ошибка")
+            If btnRuEng.Text = "Eng" Then MsgBox(txtRE(2) & vbNewLine & Strings.Left(strError, Strings.Len(strError) - 2) & vbNewLine & txtRE(4), vbInformation + vbOKOnly, txtRE(6))
+            If btnRuEng.Text = "Ru" Then MsgBox(txtRE(3) & vbNewLine & Strings.Left(strError, Strings.Len(strError) - 2) & vbNewLine & txtRE(5), vbInformation + vbOKOnly, txtRE(6))
         End If
-        'MsgBox("В массиве  - " & arrNotSel.Count & " элементов")
+
         arrNotSel.Clear()
         Me.Close()
     End Sub
@@ -52,10 +65,6 @@ Public Class dlgCopyProps
         Dim iRF As Integer, intSecShp As Integer
 
         vsoSel = winObj.Selection
-        If vsoSel.Count < 2 Then
-            MsgBox("Для завершения операции необходимо выделить как минимум два объекта! Операция прервана.", vbInformation + vbOKOnly, "Ошибка")
-            Exit Sub
-        End If
         vsoShpFst = vsoSel(1)
 
         On Error GoTo err
@@ -179,36 +188,36 @@ err:
         Dim intArrSectionData() As Integer = {0}
         Dim strTxt As String = ""
         Dim strActiveSection As String = Switch(intActiveSection = "242", "User-defined Cells", intActiveSection = "243", "Shape Data", intActiveSection = "244", "Hyperlinks, ", _
-                                        intActiveSection = "240", "Actions", intActiveSection = "9", "Controls", intActiveSection = "247", "Action Tags")
-
-        Select Case intActiveSection
-            Case 242
-                strArrSectionData = {"RowName", "Value", "Promt"}
-                intArrSectionData = {0, 1}
-            Case 243
-                strArrSectionData = {"RowName", "Label", "Promt", "Type", "Format", "Value", "SortKey", "Invisible", "Ask", "LangID", "Calendar"}
-                intArrSectionData = {2, 1, 5, 3, 0, 4, 6, 7, 14, 15}
-            Case 244
-                strArrSectionData = {"RowName", "Description", "Address", "SubAddress", "ExtraInfo", "Frame", "SortKey", "NewWindow", "Default", "Invisible"}
-                intArrSectionData = {0, 1, 2, 3, 4, 15, 5, 7, 8}
-            Case 7
-                strArrSectionData = {"RowName", "X", "Y", "DirX / A", "DirY / B", "Type / C", "D"}
-                intArrSectionData = {0, 1, 2, 3, 4, 5}
-            Case 240
-                strArrSectionData = {"RowName", "Action", "Menu", "TagName", "ButtonFace", "SortKey", "Checked", "Disabled", "ReadOnly", "Invisible", "BeginGroup", "FlyoutChild"}
-                intArrSectionData = {3, 0, 14, 15, 16, 4, 5, 6, 7, 8, 9}
-            Case 9
-                strArrSectionData = {"RowName", "X", "Y", "X Dinamics", "Y Dinamics", "X Behavior", "Y Behavior", "CanGlue", "Tip"}
-                intArrSectionData = {0, 1, 2, 3, 4, 5, 6, 8}
-            Case 6
-                strArrSectionData = {"RowName", "X", "Y", "A", "B", "C", "D"}
-                intArrSectionData = {0, 1, 2, 3, 4, 5}
-            Case 247
-                strArrSectionData = {"RowName", "X", "Y", "TagName", "X Justify", "Y Justify", "DisplayMode", "ButtonFace", "Discription", "Disabled"}
-                intArrSectionData = {0, 1, 2, 3, 4, 5, 6, 15, 7}
-        End Select
+                                        intActiveSection = "240", "Actions", intActiveSection = "6", "Scratch", intActiveSection = "7", "Connection Points", intActiveSection = "9", "Controls", intActiveSection = "247", "Action Tags")
 
         If ckbSectionsRows.Items.Count <> 0 Then
+            Select Case intActiveSection
+                Case 242
+                    strArrSectionData = {"RowName", "Value", "Promt"}
+                    intArrSectionData = {0, 1}
+                Case 243
+                    strArrSectionData = {"RowName", "Label", "Promt", "Type", "Format", "Value", "SortKey", "Invisible", "Ask", "LangID", "Calendar"}
+                    intArrSectionData = {2, 1, 5, 3, 0, 4, 6, 7, 14, 15}
+                Case 244
+                    strArrSectionData = {"RowName", "Description", "Address", "SubAddress", "ExtraInfo", "Frame", "SortKey", "NewWindow", "Default", "Invisible"}
+                    intArrSectionData = {0, 1, 2, 3, 4, 15, 5, 7, 8}
+                Case 7
+                    strArrSectionData = {"RowName", "X", "Y", "DirX / A", "DirY / B", "Type / C", "D"}
+                    intArrSectionData = {0, 1, 2, 3, 4, 5}
+                Case 240
+                    strArrSectionData = {"RowName", "Action", "Menu", "TagName", "ButtonFace", "SortKey", "Checked", "Disabled", "ReadOnly", "Invisible", "BeginGroup", "FlyoutChild"}
+                    intArrSectionData = {3, 0, 14, 15, 16, 4, 5, 6, 7, 8, 9}
+                Case 9
+                    strArrSectionData = {"RowName", "X", "Y", "X Dinamics", "Y Dinamics", "X Behavior", "Y Behavior", "CanGlue", "Tip"}
+                    intArrSectionData = {0, 1, 2, 3, 4, 5, 6, 8}
+                Case 6
+                    strArrSectionData = {"RowName", "X", "Y", "A", "B", "C", "D"}
+                    intArrSectionData = {0, 1, 2, 3, 4, 5}
+                Case 247
+                    strArrSectionData = {"RowName", "X", "Y", "TagName", "X Justify", "Y Justify", "DisplayMode", "ButtonFace", "Discription", "Disabled"}
+                    intArrSectionData = {0, 1, 2, 3, 4, 5, 6, 15, 7}
+            End Select
+
             strTxt = shObj.Name & " (" & shObj.NameU & ")" & ", "
             strTxt = strTxt & "Section - " & strActiveSection & ":" & vbCrLf
 

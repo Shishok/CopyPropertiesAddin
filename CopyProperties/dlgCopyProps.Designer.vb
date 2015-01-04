@@ -22,9 +22,6 @@ Partial Class dlgCopyProps
     'Не изменяйте ее в редакторе исходного кода.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.ShapeContainer1 = New Microsoft.VisualBasic.PowerPacks.ShapeContainer()
-        Me.LineShape2 = New Microsoft.VisualBasic.PowerPacks.LineShape()
-        Me.LineShape1 = New Microsoft.VisualBasic.PowerPacks.LineShape()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.ckb_3 = New System.Windows.Forms.CheckBox()
         Me.ckb_4 = New System.Windows.Forms.CheckBox()
@@ -42,38 +39,6 @@ Partial Class dlgCopyProps
         Me.btnClipBoard = New System.Windows.Forms.Button()
         Me.ckb_30 = New System.Windows.Forms.CheckBox()
         Me.SuspendLayout()
-        '
-        'ShapeContainer1
-        '
-        Me.ShapeContainer1.Location = New System.Drawing.Point(0, 0)
-        Me.ShapeContainer1.Margin = New System.Windows.Forms.Padding(0)
-        Me.ShapeContainer1.Name = "ShapeContainer1"
-        Me.ShapeContainer1.Shapes.AddRange(New Microsoft.VisualBasic.PowerPacks.Shape() {Me.LineShape2, Me.LineShape1})
-        Me.ShapeContainer1.Size = New System.Drawing.Size(394, 306)
-        Me.ShapeContainer1.TabIndex = 1
-        Me.ShapeContainer1.TabStop = False
-        '
-        'LineShape2
-        '
-        Me.LineShape2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.LineShape2.BorderColor = System.Drawing.SystemColors.InactiveCaption
-        Me.LineShape2.Name = "LineShape2"
-        Me.LineShape2.X1 = 15
-        Me.LineShape2.X2 = 379
-        Me.LineShape2.Y1 = 259
-        Me.LineShape2.Y2 = 259
-        '
-        'LineShape1
-        '
-        Me.LineShape1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.LineShape1.BorderColor = System.Drawing.SystemColors.InactiveCaption
-        Me.LineShape1.Name = "LineShape1"
-        Me.LineShape1.X1 = 69
-        Me.LineShape1.X2 = 379
-        Me.LineShape1.Y1 = 19
-        Me.LineShape1.Y2 = 19
         '
         'Label1
         '
@@ -138,6 +103,7 @@ Partial Class dlgCopyProps
         Me.ckb_6.AccessibleName = "Connection Points"
         Me.ckb_6.AutoSize = True
         Me.ckb_6.Enabled = False
+        Me.ckb_6.ForeColor = System.Drawing.Color.Red
         Me.ckb_6.Location = New System.Drawing.Point(15, 89)
         Me.ckb_6.Margin = New System.Windows.Forms.Padding(1)
         Me.ckb_6.Name = "ckb_6"
@@ -183,6 +149,7 @@ Partial Class dlgCopyProps
         Me.ckb_10.AccessibleName = "Scratch"
         Me.ckb_10.AutoSize = True
         Me.ckb_10.Enabled = False
+        Me.ckb_10.ForeColor = System.Drawing.Color.Red
         Me.ckb_10.Location = New System.Drawing.Point(15, 146)
         Me.ckb_10.Margin = New System.Windows.Forms.Padding(1)
         Me.ckb_10.Name = "ckb_10"
@@ -326,7 +293,6 @@ Partial Class dlgCopyProps
         Me.Controls.Add(Me.ckb_4)
         Me.Controls.Add(Me.ckb_3)
         Me.Controls.Add(Me.Label1)
-        Me.Controls.Add(Me.ShapeContainer1)
         Me.MaximizeBox = False
         Me.MaximumSize = New System.Drawing.Size(500, 500)
         Me.MinimizeBox = False
@@ -341,8 +307,6 @@ Partial Class dlgCopyProps
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents ShapeContainer1 As Microsoft.VisualBasic.PowerPacks.ShapeContainer
-    Friend WithEvents LineShape1 As Microsoft.VisualBasic.PowerPacks.LineShape
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents ckb_3 As System.Windows.Forms.CheckBox
     Friend WithEvents ckb_4 As System.Windows.Forms.CheckBox
@@ -351,7 +315,6 @@ Partial Class dlgCopyProps
     Friend WithEvents ckb_7 As System.Windows.Forms.CheckBox
     Friend WithEvents ckb_8 As System.Windows.Forms.CheckBox
     Friend WithEvents ckb_10 As System.Windows.Forms.CheckBox
-    Friend WithEvents LineShape2 As Microsoft.VisualBasic.PowerPacks.LineShape
     Friend WithEvents btnRuEng As System.Windows.Forms.Button
     Friend WithEvents btn_OK As System.Windows.Forms.Button
     Friend WithEvents btn_Cancel As System.Windows.Forms.Button
