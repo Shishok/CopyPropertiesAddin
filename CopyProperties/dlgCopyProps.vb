@@ -2,9 +2,8 @@
 Imports System.Collections
 
 Public Class dlgCopyProps
-    ' Сделать с указанием имени/ID шейпа
 
-    Dim winObj As Visio.Window '= vsoApp.ActiveWindow
+    Dim winObj As Visio.Window
     Dim strError As String = ""
     Dim arrNotSel As New ArrayList
     Dim intActiveSection As Integer
@@ -56,7 +55,7 @@ Public Class dlgCopyProps
         Me.Close()
     End Sub
 
-    Private Sub CopyProp(arg, repC, remM) 'Копировать свойства секции Prop
+    Private Sub CopyProp(arg, repC, remM)
         Dim vsoSel As Visio.Selection
         Dim vsoShpFst As Visio.Shape
         Dim vsoShpSec As Visio.Shape
@@ -69,23 +68,23 @@ Public Class dlgCopyProps
 
         On Error GoTo err
 
-        For intSecShp = 2 To vsoSel.Count 'Перебор выделенных элементов (вторичных)
+        For intSecShp = 2 To vsoSel.Count
             vsoShpSec = vsoSel(intSecShp)
 
             If Not vsoShpSec.SectionExists(arg, 0) Then
                 vsoShpSec.AddSection(arg)
 
-                For i = 0 To vsoShpFst.RowCount(arg) - 1 'Перебор строк 1 шейпа и добавление именованных строк во вторичн. шейп
+                For i = 0 To vsoShpFst.RowCount(arg) - 1
                     If Not arrNotSel.Contains(vsoShpFst.CellsSRC(arg, i, 0).Name) Then vsoShpSec.AddNamedRow(arg, vsoShpFst.CellsSRC(arg, i, 0).RowName, 0) 'visTagDefault
                 Next
 
-                For i = 0 To vsoShpSec.RowCount(arg) - 1 ' Перебор строк секции
-                    For j = 0 To vsoShpSec.RowsCellCount(arg, i)  ' Перебор ячеек строк секций и запись значений в них
+                For i = 0 To vsoShpSec.RowCount(arg) - 1
+                    For j = 0 To vsoShpSec.RowsCellCount(arg, i)
                         vsoShpSec.CellsSRC(arg, i, j).FormulaU = vsoShpFst.CellsSRC(arg, i, j).FormulaU
                     Next
                 Next
             Else
-                For iRF = 0 To vsoShpFst.RowCount(arg) - 1 'Перебор строк секции Prop первичного элемента
+                For iRF = 0 To vsoShpFst.RowCount(arg) - 1
                     vsoCellF = vsoShpFst.CellsSRC(arg, iRF, 0)
 
                     If Not arrNotSel.Contains(vsoCellF.Name) Then
@@ -115,16 +114,14 @@ Public Class dlgCopyProps
         Exit Sub
 
 err:
-
         strError = strError & Switch(arg = "242", "User-defined Cells, ", arg = "243", "Shape Data, ", arg = "244", "Hyperlinks, ", _
                     arg = "240", "Actions, ", arg = "9", "Controls, ", arg = "247", "Action Tags, ")
-
     End Sub
 
-    Private Function RowNameExists(x, vsoShpSec, strName) ' As Boolean
+    Private Function RowNameExists(x, vsoShpSec, strName)
 
         On Error GoTo err
-        vsoShpSec.AddNamedRow(x, strName, 0)  'visTagDefault
+        vsoShpSec.AddNamedRow(x, strName, 0)
         RowNameExists = False
         Exit Function
 
@@ -162,6 +159,9 @@ err:
             .Clear()
             For iCell = 0 To IndCell
                 .Add(winObj.Selection(1).CellsSRC(IndSection, iCell, 0).Name, True)
+                If arrNotSel.Contains(winObj.Selection(1).CellsSRC(IndSection, iCell, 0).Name) Then
+                    ckbSectionsRows.SetItemChecked(ckbSectionsRows.Items.Count - 1, False)
+                End If
             Next
         End With
 
@@ -243,6 +243,12 @@ err:
     End Sub
 
 #Region "Control's Events"
+
+    'Private Sub CheckBox_CheckedChanged(sender As Button, e As System.EventArgs) _
+    '    Handles ckb_3.CheckedChanged, ckb_4.CheckedChanged, ckb_5.CheckedChanged, ckb_6.CheckedChanged, _
+    '    ckb_7.CheckedChanged, ckb_8.CheckedChanged, ckb_10.CheckedChanged, ckb_30.CheckedChanged
+    '    Call ViewSectionsRowsCustom(sender.Tag)
+    'End Sub
 
     Private Sub ckb_3_CheckedChanged(sender As Object, e As EventArgs) Handles ckb_3.CheckedChanged
         Call ViewSectionsRowsCustom(242)
