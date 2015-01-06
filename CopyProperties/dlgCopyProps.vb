@@ -9,14 +9,13 @@ Public Class dlgCopyProps
     Dim intActiveSection As Integer
 
     Private Sub dlgCopyProps_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Dim ctl As System.Windows.Forms.Control
         winObj = vsoApp.ActiveWindow
         Me.Text = Me.Text & " - " & winObj.Selection(1).Name
         btnRuEng.Text = "Eng"
-        Dim namesel As String = "ckb_"
-        Dim ctl As System.Windows.Forms.Control
 
         For Each ctl In Me.Controls
-            If InStr(1, ctl.Name, namesel, 1) <> 0 Then ctl.Enabled = CheckSection(ctl.Tag)
+            If InStr(1, ctl.Name, "ckb_", 1) <> 0 Then ctl.Enabled = CheckSection(ctl.Tag)
         Next
 
     End Sub
@@ -33,18 +32,20 @@ Public Class dlgCopyProps
         If winObj.Selection.Count < 2 Then
             If btnRuEng.Text = "Eng" Then MsgBox(txtRE(0), vbInformation + vbOKOnly, txtRE(6))
             If btnRuEng.Text = "Ru" Then MsgBox(txtRE(1), vbInformation + vbOKOnly, txtRE(6))
-            Me.Close()
             Exit Sub
         End If
 
-        If ckb_3.Checked Then Call CopyProp(ckb_3.Tag, ckbReplaceContent.Checked, ckbRemoveMissing.Checked)
-        If ckb_4.Checked Then Call CopyProp(ckb_4.Tag, ckbReplaceContent.Checked, ckbRemoveMissing.Checked)
-        If ckb_5.Checked Then Call CopyProp(ckb_5.Tag, ckbReplaceContent.Checked, ckbRemoveMissing.Checked)
-        'If ckb_6.Checked Then Call CopyProp(ckb_6.Tag, ckbReplaceContent.Checked, ckbRemoveMissing.Checked)
-        If ckb_7.Checked Then Call CopyProp(ckb_7.Tag, ckbReplaceContent.Checked, ckbRemoveMissing.Checked)
-        If ckb_8.Checked Then Call CopyProp(ckb_8.Tag, ckbReplaceContent.Checked, ckbRemoveMissing.Checked)
-        'If ckb_10.Checked Then Call CopyProp(ckb_10.Tag, ckbReplaceContent.Checked, ckbRemoveMissing.Checked)
-        If ckb_30.Checked Then Call CopyProp(ckb_30.Tag, ckbReplaceContent.Checked, ckbRemoveMissing.Checked)
+        Dim rC As Boolean = ckbReplaceContent.Checked
+        Dim rM As Boolean = ckbRemoveMissing.Checked
+
+        If ckb_3.Checked Then Call CopyProp(ckb_3.Tag, rC, rM)
+        If ckb_4.Checked Then Call CopyProp(ckb_4.Tag, rC, rM)
+        If ckb_5.Checked Then Call CopyProp(ckb_5.Tag, rC, rM)
+        If ckb_6.Checked Then Call CopyProp(ckb_6.Tag, rC, rM)
+        If ckb_7.Checked Then Call CopyProp(ckb_7.Tag, rC, rM)
+        If ckb_8.Checked Then Call CopyProp(ckb_8.Tag, rC, rM)
+        If ckb_10.Checked Then Call CopyProp(ckb_10.Tag, rC, rM)
+        If ckb_30.Checked Then Call CopyProp(ckb_30.Tag, rC, rM)
 
         If strError <> "" Then
             If btnRuEng.Text = "Eng" Then MsgBox(txtRE(2) & vbNewLine & Strings.Left(strError, Strings.Len(strError) - 2) & vbNewLine & txtRE(4), vbInformation + vbOKOnly, txtRE(6))
@@ -68,22 +69,31 @@ Public Class dlgCopyProps
 
         On Error GoTo err
 
-        For intSecShp = 2 To vsoSel.Count
+        For intSecShp = 2 To vsoSel.Count ' Перебор вторичных шейпов
             vsoShpSec = vsoSel(intSecShp)
 
-            If Not vsoShpSec.SectionExists(arg, 0) Then
-                vsoShpSec.AddSection(arg)
+            If arg = 6 Or arg = 7 Then ' Если секция Scratch или Connection Points
+                vsoShpSec.DeleteSection(arg) ' Удалить секцию
+            End If
 
-                For i = 0 To vsoShpFst.RowCount(arg) - 1
-                    If Not arrNotSel.Contains(vsoShpFst.CellsSRC(arg, i, 0).Name) Then vsoShpSec.AddNamedRow(arg, vsoShpFst.CellsSRC(arg, i, 0).RowName, 0) 'visTagDefault
-                Next
+            If Not vsoShpSec.SectionExists(arg, 0) Then ' Если секция отсутствует
+
+                If arg = 6 Or arg = 7 Then ' Если секция Scratch или Connection Points
+                    vsoShpSec.AddRows(arg, 0, 0, vsoShpFst.RowCount(arg))
+                Else ' Другие секции
+                    vsoShpSec.AddSection(arg)
+                    For i = 0 To vsoShpFst.RowCount(arg) - 1
+                        If Not arrNotSel.Contains(vsoShpFst.CellsSRC(arg, i, 0).Name) Then vsoShpSec.AddNamedRow(arg, vsoShpFst.CellsSRC(arg, i, 0).RowName, 0)
+                    Next
+                End If
 
                 For i = 0 To vsoShpSec.RowCount(arg) - 1
                     For j = 0 To vsoShpSec.RowsCellCount(arg, i)
                         vsoShpSec.CellsSRC(arg, i, j).FormulaU = vsoShpFst.CellsSRC(arg, i, j).FormulaU
                     Next
                 Next
-            Else
+            Else ' Если секция существует
+
                 For iRF = 0 To vsoShpFst.RowCount(arg) - 1
                     vsoCellF = vsoShpFst.CellsSRC(arg, iRF, 0)
 
@@ -242,6 +252,14 @@ err:
         My.Computer.Clipboard.SetText(strTxt)
     End Sub
 
+    Private Sub lbl2(s)
+        With Label2
+            .AccessibleName = s.AccessibleName
+            .AccessibleDescription = s.AccessibleDescription
+            .Text = s.text
+        End With
+    End Sub
+
 #Region "Control's Events"
 
     'Private Sub CheckBox_CheckedChanged(sender As Button, e As System.EventArgs) _
@@ -251,35 +269,35 @@ err:
     'End Sub
 
     Private Sub ckb_3_CheckedChanged(sender As Object, e As EventArgs) Handles ckb_3.CheckedChanged
-        Call ViewSectionsRowsCustom(242)
+        Call ViewSectionsRowsCustom(242) : lbl2(sender)
     End Sub
 
     Private Sub ckb_4_CheckedChanged(sender As Object, e As EventArgs) Handles ckb_4.CheckedChanged
-        Call ViewSectionsRowsCustom(243)
+        Call ViewSectionsRowsCustom(243) : lbl2(sender)
     End Sub
 
     Private Sub ckb_5_CheckedChanged(sender As Object, e As EventArgs) Handles ckb_5.CheckedChanged
-        Call ViewSectionsRowsCustom(244)
+        Call ViewSectionsRowsCustom(244) : lbl2(sender)
     End Sub
 
     Private Sub ckb_6_CheckedChanged(sender As Object, e As EventArgs) Handles ckb_6.CheckedChanged
-        Call ViewSectionsRowsCustom(7)
+        Call ViewSectionsRowsCustom(7) : lbl2(sender)
     End Sub
 
     Private Sub ckb_7_CheckedChanged(sender As Object, e As EventArgs) Handles ckb_7.CheckedChanged
-        Call ViewSectionsRowsCustom(240)
+        Call ViewSectionsRowsCustom(240) : lbl2(sender)
     End Sub
 
     Private Sub ckb_8_CheckedChanged(sender As Object, e As EventArgs) Handles ckb_8.CheckedChanged
-        Call ViewSectionsRowsCustom(9)
+        Call ViewSectionsRowsCustom(9) : lbl2(sender)
     End Sub
 
     Private Sub ckb_10_CheckedChanged(sender As Object, e As EventArgs) Handles ckb_10.CheckedChanged
-        Call ViewSectionsRowsCustom(6)
+        Call ViewSectionsRowsCustom(6) : lbl2(sender)
     End Sub
 
     Private Sub ckb_30_CheckedChanged(sender As Object, e As EventArgs) Handles ckb_30.CheckedChanged
-        Call ViewSectionsRowsCustom(247)
+        Call ViewSectionsRowsCustom(247) : lbl2(sender)
     End Sub
 
 #End Region

@@ -38,6 +38,7 @@ Partial Class dlgCopyProps
         Me.ckbRemoveMissing = New System.Windows.Forms.CheckBox()
         Me.btnClipBoard = New System.Windows.Forms.Button()
         Me.ckb_30 = New System.Windows.Forms.CheckBox()
+        Me.Label2 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'Label1
@@ -103,7 +104,7 @@ Partial Class dlgCopyProps
         Me.ckb_6.AccessibleName = "Connection Points"
         Me.ckb_6.AutoSize = True
         Me.ckb_6.Enabled = False
-        Me.ckb_6.ForeColor = System.Drawing.Color.Red
+        Me.ckb_6.ForeColor = System.Drawing.SystemColors.ControlText
         Me.ckb_6.Location = New System.Drawing.Point(15, 89)
         Me.ckb_6.Margin = New System.Windows.Forms.Padding(1)
         Me.ckb_6.Name = "ckb_6"
@@ -149,7 +150,7 @@ Partial Class dlgCopyProps
         Me.ckb_10.AccessibleName = "Scratch"
         Me.ckb_10.AutoSize = True
         Me.ckb_10.Enabled = False
-        Me.ckb_10.ForeColor = System.Drawing.Color.Red
+        Me.ckb_10.ForeColor = System.Drawing.SystemColors.ControlText
         Me.ckb_10.Location = New System.Drawing.Point(15, 146)
         Me.ckb_10.Margin = New System.Windows.Forms.Padding(1)
         Me.ckb_10.Name = "ckb_10"
@@ -250,7 +251,7 @@ Partial Class dlgCopyProps
         Me.btnClipBoard.AutoSize = True
         Me.btnClipBoard.Location = New System.Drawing.Point(71, 271)
         Me.btnClipBoard.Name = "btnClipBoard"
-        Me.btnClipBoard.Size = New System.Drawing.Size(105, 23)
+        Me.btnClipBoard.Size = New System.Drawing.Size(100, 23)
         Me.btnClipBoard.TabIndex = 14
         Me.btnClipBoard.Text = "Буфер обмена"
         Me.btnClipBoard.UseVisualStyleBackColor = True
@@ -270,6 +271,17 @@ Partial Class dlgCopyProps
         Me.ckb_30.Text = "Теги действий"
         Me.ckb_30.UseVisualStyleBackColor = True
         '
+        'Label2
+        '
+        Me.Label2.AccessibleDescription = ""
+        Me.Label2.AccessibleName = ""
+        Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
+        Me.Label2.Location = New System.Drawing.Point(177, 9)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(0, 13)
+        Me.Label2.TabIndex = 16
+        '
         'dlgCopyProps
         '
         Me.AccessibleDescription = "Копирование свойств фигуры"
@@ -277,6 +289,7 @@ Partial Class dlgCopyProps
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(394, 306)
+        Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.ckb_30)
         Me.Controls.Add(Me.btnClipBoard)
         Me.Controls.Add(Me.ckbRemoveMissing)
@@ -323,4 +336,5 @@ Partial Class dlgCopyProps
     Friend WithEvents ckbRemoveMissing As System.Windows.Forms.CheckBox
     Friend WithEvents btnClipBoard As System.Windows.Forms.Button
     Friend WithEvents ckb_30 As System.Windows.Forms.CheckBox
+    Friend WithEvents Label2 As System.Windows.Forms.Label
 End Class
