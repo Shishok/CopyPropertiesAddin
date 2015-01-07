@@ -23,10 +23,10 @@ Public Class dlgCopyProps
     Private Sub btn_OK_Click(sender As Object, e As EventArgs) Handles btn_OK.Click
         Dim txtRE() As String = {"Для выполнения операции необходимо минимум два объекта! Операция прервана.",
                                  "The operation requires a minimum of two objects! Operation aborted.",
-                                 "Ошибка при копировании формул ячеек:",
-                                 "Error when copying formulas cells:",
-                                 "Повторите попытку для этих ячеек.",
-                                 "Please try again for these cells.",
+                                 "Ошибка при копировании формул строк:",
+                                 "Error when copying formulas rows:",
+                                 "Повторите попытку для этих строк.",
+                                 "Please try again for these rows.",
                                  "CopyProperties Addin"}
 
         If winObj.Selection.Count < 2 Then
@@ -37,6 +37,9 @@ Public Class dlgCopyProps
 
         Dim rC As Boolean = ckbReplaceContent.Checked
         Dim rM As Boolean = ckbRemoveMissing.Checked
+        Dim UndoScopeID1 As Long
+
+        UndoScopeID1 = vsoApp.BeginUndoScope(Me.Text)
 
         If ckb_3.Checked Then Call CopyProp(ckb_3.Tag, rC, rM)
         If ckb_4.Checked Then Call CopyProp(ckb_4.Tag, rC, rM)
@@ -55,6 +58,8 @@ Public Class dlgCopyProps
             arrNotSel.Clear()
             Me.Close()
         End If
+
+        vsoApp.EndUndoScope(UndoScopeID1, True)
     End Sub
 
     Private Sub CopyProp(arg, repC, remM)
@@ -125,9 +130,8 @@ Public Class dlgCopyProps
         Exit Sub
 
 err:
-        strError = strError & vsoShpSec.Name & ": " & vsoShpSec.CellsSRC(arg, i, j).Name & ", "
-        'strError = strError & Switch(arg = "242", "User-defined Cells, ", arg = "243", "Shape Data, ", arg = "244", "Hyperlinks, ", _
-        '            arg = "240", "Actions, ", arg = "9", "Controls, ", arg = "247", "Action Tags, ")
+        strError = strError & vsoShpSec.Name & ": " & vsoShpSec.CellsSRC(arg, i, 0).Name & vbNewLine
+
     End Sub
 
     Private Function RowNameExists(arg, vsoShpSec, strName)
