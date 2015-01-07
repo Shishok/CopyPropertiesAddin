@@ -23,10 +23,10 @@ Public Class dlgCopyProps
     Private Sub btn_OK_Click(sender As Object, e As EventArgs) Handles btn_OK.Click
         Dim txtRE() As String = {"Для выполнения операции необходимо минимум два объекта! Операция прервана.",
                                  "The operation requires a minimum of two objects! Operation aborted.",
-                                 "Ошибка при копировании формул секций:",
-                                 "Error when copying formulas sections:",
-                                 "Повторите попытку для этих секций.",
-                                 "Please try again for these sections.",
+                                 "Ошибка при копировании формул ячеек:",
+                                 "Error when copying formulas cells:",
+                                 "Повторите попытку для этих ячеек.",
+                                 "Please try again for these cells.",
                                  "CopyProperties Addin"}
 
         If winObj.Selection.Count < 2 Then
@@ -50,10 +50,11 @@ Public Class dlgCopyProps
         If strError <> "" Then
             If btnRuEng.Text = "Eng" Then MsgBox(txtRE(2) & vbNewLine & Strings.Left(strError, Strings.Len(strError) - 2) & vbNewLine & txtRE(4), vbInformation + vbOKOnly, txtRE(6))
             If btnRuEng.Text = "Ru" Then MsgBox(txtRE(3) & vbNewLine & Strings.Left(strError, Strings.Len(strError) - 2) & vbNewLine & txtRE(5), vbInformation + vbOKOnly, txtRE(6))
+            strError = ""
+        Else
+            arrNotSel.Clear()
+            Me.Close()
         End If
-
-        arrNotSel.Clear()
-        Me.Close()
     End Sub
 
     Private Sub CopyProp(arg, repC, remM)
@@ -61,8 +62,8 @@ Public Class dlgCopyProps
         Dim vsoShpFst As Visio.Shape
         Dim vsoShpSec As Visio.Shape
         Dim vsoCellF As Visio.Cell
-        Dim booDelRow As Boolean, booAddRow As Boolean, cRi As Integer
-        Dim iRF As Integer, intSecShp As Integer
+        Dim booDelRow As Boolean, booAddRow As Boolean
+        Dim intSecShp As Integer, i As Integer, j As Integer, q As Integer
 
         vsoSel = winObj.Selection
         vsoShpFst = vsoSel(1)
@@ -87,23 +88,23 @@ Public Class dlgCopyProps
                     Next
                 End If
 
-                For i = 0 To vsoShpSec.RowCount(arg) - 1
+                For i = 0 To vsoShpSec.RowCount(arg) - 1 ' Перебор ячеек и запись значений в них
                     For j = 0 To vsoShpSec.RowsCellCount(arg, i)
                         vsoShpSec.CellsSRC(arg, i, j).FormulaU = vsoShpFst.CellsSRC(arg, i, j).FormulaU
                     Next
                 Next
             Else ' Если секция существует
 
-                For iRF = 0 To vsoShpFst.RowCount(arg) - 1
-                    vsoCellF = vsoShpFst.CellsSRC(arg, iRF, 0)
+                For q = 0 To vsoShpFst.RowCount(arg) - 1
+                    vsoCellF = vsoShpFst.CellsSRC(arg, q, 0)
 
                     If Not arrNotSel.Contains(vsoCellF.Name) Then
                         booAddRow = RowNameExists(arg, vsoShpSec, vsoCellF.RowName)
 
                         If repC Then ' Перебор ячеек и запись значений в них если требуется
-                            cRi = vsoShpSec.CellsRowIndex(vsoCellF.Name)
-                            For i = 0 To vsoShpSec.RowsCellCount(arg, cRi)
-                                vsoShpSec.CellsSRC(arg, cRi, i).FormulaU = vsoShpFst.CellsSRC(arg, vsoShpFst.CellsRowIndex(vsoCellF.Name), i).FormulaU
+                            i = vsoShpSec.CellsRowIndex(vsoCellF.Name)
+                            For j = 0 To vsoShpSec.RowsCellCount(arg, i)
+                                vsoShpSec.CellsSRC(arg, i, j).FormulaU = vsoShpFst.CellsSRC(arg, vsoShpFst.CellsRowIndex(vsoCellF.Name), j).FormulaU
                             Next
                         End If
                     End If
@@ -124,14 +125,15 @@ Public Class dlgCopyProps
         Exit Sub
 
 err:
-        strError = strError & Switch(arg = "242", "User-defined Cells, ", arg = "243", "Shape Data, ", arg = "244", "Hyperlinks, ", _
-                    arg = "240", "Actions, ", arg = "9", "Controls, ", arg = "247", "Action Tags, ")
+        strError = strError & vsoShpSec.Name & ": " & vsoShpSec.CellsSRC(arg, i, j).Name & ", "
+        'strError = strError & Switch(arg = "242", "User-defined Cells, ", arg = "243", "Shape Data, ", arg = "244", "Hyperlinks, ", _
+        '            arg = "240", "Actions, ", arg = "9", "Controls, ", arg = "247", "Action Tags, ")
     End Sub
 
-    Private Function RowNameExists(x, vsoShpSec, strName)
+    Private Function RowNameExists(arg, vsoShpSec, strName)
 
         On Error GoTo err
-        vsoShpSec.AddNamedRow(x, strName, 0)
+        vsoShpSec.AddNamedRow(arg, strName, 0)
         RowNameExists = False
         Exit Function
 
@@ -201,30 +203,31 @@ err:
                                         intActiveSection = "240", "Actions", intActiveSection = "6", "Scratch", intActiveSection = "7", "Connection Points", intActiveSection = "9", "Controls", intActiveSection = "247", "Action Tags")
 
         If ckbSectionsRows.Items.Count <> 0 Then
+            Const r = "RowName"
             Select Case intActiveSection
                 Case 242
-                    strArrSectionData = {"RowName", "Value", "Promt"}
+                    strArrSectionData = {r, "Value", "Promt"}
                     intArrSectionData = {0, 1}
                 Case 243
-                    strArrSectionData = {"RowName", "Label", "Promt", "Type", "Format", "Value", "SortKey", "Invisible", "Ask", "LangID", "Calendar"}
+                    strArrSectionData = {r, "Label", "Promt", "Type", "Format", "Value", "SortKey", "Invisible", "Ask", "LangID", "Calendar"}
                     intArrSectionData = {2, 1, 5, 3, 0, 4, 6, 7, 14, 15}
                 Case 244
-                    strArrSectionData = {"RowName", "Description", "Address", "SubAddress", "ExtraInfo", "Frame", "SortKey", "NewWindow", "Default", "Invisible"}
+                    strArrSectionData = {r, "Description", "Address", "SubAddress", "ExtraInfo", "Frame", "SortKey", "NewWindow", "Default", "Invisible"}
                     intArrSectionData = {0, 1, 2, 3, 4, 15, 5, 7, 8}
                 Case 7
-                    strArrSectionData = {"RowName", "X", "Y", "DirX / A", "DirY / B", "Type / C", "D"}
+                    strArrSectionData = {r, "X", "Y", "DirX / A", "DirY / B", "Type / C", "D"}
                     intArrSectionData = {0, 1, 2, 3, 4, 5}
                 Case 240
-                    strArrSectionData = {"RowName", "Action", "Menu", "TagName", "ButtonFace", "SortKey", "Checked", "Disabled", "ReadOnly", "Invisible", "BeginGroup", "FlyoutChild"}
+                    strArrSectionData = {r, "Action", "Menu", "TagName", "ButtonFace", "SortKey", "Checked", "Disabled", "ReadOnly", "Invisible", "BeginGroup", "FlyoutChild"}
                     intArrSectionData = {3, 0, 14, 15, 16, 4, 5, 6, 7, 8, 9}
                 Case 9
-                    strArrSectionData = {"RowName", "X", "Y", "X Dinamics", "Y Dinamics", "X Behavior", "Y Behavior", "CanGlue", "Tip"}
+                    strArrSectionData = {r, "X", "Y", "X Dinamics", "Y Dinamics", "X Behavior", "Y Behavior", "CanGlue", "Tip"}
                     intArrSectionData = {0, 1, 2, 3, 4, 5, 6, 8}
                 Case 6
-                    strArrSectionData = {"RowName", "X", "Y", "A", "B", "C", "D"}
+                    strArrSectionData = {r, "X", "Y", "A", "B", "C", "D"}
                     intArrSectionData = {0, 1, 2, 3, 4, 5}
                 Case 247
-                    strArrSectionData = {"RowName", "X", "Y", "TagName", "X Justify", "Y Justify", "DisplayMode", "ButtonFace", "Discription", "Disabled"}
+                    strArrSectionData = {r, "X", "Y", "TagName", "X Justify", "Y Justify", "DisplayMode", "ButtonFace", "Discription", "Disabled"}
                     intArrSectionData = {0, 1, 2, 3, 4, 5, 6, 15, 7}
             End Select
 

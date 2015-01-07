@@ -6,11 +6,7 @@
         <group id="Group1" label="Copy Properties">
 
           <button id="Command2" size="large" label="Копировать свойства фигуры" onAction="OnRibbonButtonClick" getEnabled="IsRibbonCommandEnabled" imageMso="ChartResetToMatchStyle"/>
-                    
-          <!--<separator id="sep1" />
-          <toggleButton id="TogglePanel" getLabel="OnGetRibbonLabel" size="large" 
-                        onAction="OnRibbonButtonCheckClick" getEnabled="IsRibbonCommandEnabled" getImage="GetRibbonImage" getPressed="IsRibbonCommandChecked" />-->
-          
+
         </group>
       </tab>
     </tabs>

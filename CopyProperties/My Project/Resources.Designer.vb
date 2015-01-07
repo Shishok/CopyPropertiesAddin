@@ -61,76 +61,25 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Поиск локализованного ресурса типа System.Drawing.Icon, аналогичного (Значок).
-        '''</summary>
-        Friend ReadOnly Property Command1() As System.Drawing.Icon
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Command1", resourceCulture)
-                Return CType(obj,System.Drawing.Icon)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Ищет локализованную строку, похожую на command 1.
-        '''</summary>
-        Friend ReadOnly Property Command1_Label() As String
-            Get
-                Return ResourceManager.GetString("Command1_Label", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Поиск локализованного ресурса типа System.Drawing.Icon, аналогичного (Значок).
-        '''</summary>
-        Friend ReadOnly Property Command2() As System.Drawing.Icon
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Command2", resourceCulture)
-                Return CType(obj,System.Drawing.Icon)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Ищет локализованную строку, похожую на command 2.
-        '''</summary>
-        Friend ReadOnly Property Command2_Label() As String
-            Get
-                Return ResourceManager.GetString("Command2_Label", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Ищет локализованную строку, похожую на &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
         '''&lt;customUI xmlns=&quot;http://schemas.microsoft.com/office/2009/07/customui&quot; onLoad=&quot;OnRibbonLoad&quot;&gt;
         '''  &lt;ribbon&gt;
         '''    &lt;tabs&gt;
-        '''      &lt;tab idMso=&quot;TabHome&quot;&gt;
-        '''        &lt;group id=&quot;Group1&quot; label=&quot;CopyProperties&quot;&gt;
+        '''      &lt;tab idMso=&quot;TabDeveloper&quot;&gt;
+        '''        &lt;group id=&quot;Group1&quot; label=&quot;Copy Properties&quot;&gt;
         '''
-        '''          &lt;button id=&quot;Command1&quot; size=&quot;large&quot; getLabel=&quot;OnGetRibbonLabel&quot; onAction=&quot;OnRibbonButtonClick&quot; getEnabled=&quot;IsRibbonCommandEnabled&quot; getImage=&quot;GetRibbonImage&quot; /&gt;
-        '''          &lt;button id=&quot;Command2&quot; size=&quot;large&quot; getLabel=&quot;OnGetRibbonLabel&quot; onAction=&quot;OnRibbonButtonCli [остаток строки не уместился]&quot;;.
+        '''          &lt;button id=&quot;Command2&quot; size=&quot;large&quot; label=&quot;Копировать свойства фигуры&quot; onAction=&quot;OnRibbonButtonClick&quot; getEnabled=&quot;IsRibbonCommandEnabled&quot; imageMso=&quot;ChartResetToMatchStyle&quot;/&gt;
+        '''
+        '''        &lt;/group&gt;
+        '''      &lt;/tab&gt;
+        '''    &lt;/tabs&gt;
+        '''  &lt;/ribbon&gt;
+        '''&lt;/customUI&gt;
+        '''.
         '''</summary>
         Friend ReadOnly Property Ribbon() As String
             Get
                 Return ResourceManager.GetString("Ribbon", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Поиск локализованного ресурса типа System.Drawing.Icon, аналогичного (Значок).
-        '''</summary>
-        Friend ReadOnly Property TogglePanel() As System.Drawing.Icon
-            Get
-                Dim obj As Object = ResourceManager.GetObject("TogglePanel", resourceCulture)
-                Return CType(obj,System.Drawing.Icon)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Ищет локализованную строку, похожую на Toggle panel.
-        '''</summary>
-        Friend ReadOnly Property TogglePanel_Label() As String
-            Get
-                Return ResourceManager.GetString("TogglePanel_Label", resourceCulture)
             End Get
         End Property
     End Module

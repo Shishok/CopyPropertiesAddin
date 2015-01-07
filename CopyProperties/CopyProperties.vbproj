@@ -23,7 +23,7 @@
     <PublishUrl>publish\</PublishUrl>
     <InstallUrl />
     <TargetCulture>ru</TargetCulture>
-    <ApplicationVersion>1.0.1.8</ApplicationVersion>
+    <ApplicationVersion>1.0.2.2</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -166,23 +166,9 @@
     <Compile Include="Addin.vb" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TheForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <EmbeddedResource Include="dlgCopyProps.resx">
       <DependentUpon>dlgCopyProps.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TheForm.resx">
-      <DependentUpon>TheForm.vb</DependentUpon>
-    </EmbeddedResource>
-    <Compile Include="TheForm.Designer.vb">
-      <DependentUpon>TheForm.vb</DependentUpon>
-    </Compile>
-    <Compile Include="PanelFrame.vb" />
-    <Compile Include="PanelManager.vb" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Resources\TogglePanel.ico" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
@@ -196,8 +182,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Content Include="Resources\Command1.ico" />
-    <Content Include="Resources\Command2.ico" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddinRibbon.vb" />
