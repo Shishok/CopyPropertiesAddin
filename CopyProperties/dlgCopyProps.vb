@@ -8,7 +8,19 @@ Public Class dlgCopyProps
     Dim arrNotSel As New ArrayList
     Dim intActiveSection As Integer
 
+    Private Sub dlgCopyProps_FormClosed(sender As Object, e As FormClosedEventArgs) Handles Me.FormClosed
+        csWin(0) = Me.Left : csWin(1) = Me.Top : csWin(2) = Me.Width : csWin(3) = Me.Height
+        frmCopyProps = Nothing
+    End Sub
+
     Private Sub dlgCopyProps_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        If csWin(0) <> 0 Then
+            Me.Left = csWin(0)
+            Me.Top = csWin(1)
+            Me.Width = csWin(2)
+            Me.Height = csWin(3)
+        End If
+
         Dim ctl As System.Windows.Forms.Control
         winObj = vsoApp.ActiveWindow
         Me.Text = Me.Text & " - " & winObj.Selection(1).Name
@@ -95,7 +107,7 @@ Public Class dlgCopyProps
 
                 For i = 0 To vsoShpSec.RowCount(arg) - 1 ' Перебор ячеек и запись значений в них
                     For j = 0 To vsoShpSec.RowsCellCount(arg, i)
-                        vsoShpSec.CellsSRC(arg, i, j).FormulaU = vsoShpFst.CellsSRC(arg, i, j).FormulaU
+                        vsoShpSec.CellsSRC(arg, i, j).FormulaForceU = vsoShpFst.CellsSRC(arg, i, j).FormulaU
                     Next
                 Next
             Else ' Если секция существует
@@ -109,7 +121,7 @@ Public Class dlgCopyProps
                         If repC Then ' Перебор ячеек и запись значений в них если требуется
                             i = vsoShpSec.CellsRowIndex(vsoCellF.Name)
                             For j = 0 To vsoShpSec.RowsCellCount(arg, i)
-                                vsoShpSec.CellsSRC(arg, i, j).FormulaU = vsoShpFst.CellsSRC(arg, vsoShpFst.CellsRowIndex(vsoCellF.Name), j).FormulaU
+                                vsoShpSec.CellsSRC(arg, i, j).FormulaForceU = vsoShpFst.CellsSRC(arg, vsoShpFst.CellsRowIndex(vsoCellF.Name), j).FormulaU
                             Next
                         End If
                     End If

@@ -8,7 +8,12 @@ Partial Public Class Addin
         On Error GoTo errD
         Select Case commandId
             Case "Command2"
-                If Application.ActiveWindow.Selection.Count > 0 Then Call MainModule.Load_frmCopyProps()
+                If Application.ActiveWindow.Selection.Count > 0 Then
+                    If frmCopyProps Is Nothing Then
+                        frmCopyProps = New dlgCopyProps
+                        frmCopyProps.Show()
+                    End If
+                End If
                 Return
         End Select
         Exit Sub

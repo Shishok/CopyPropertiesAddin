@@ -3,11 +3,8 @@ Imports System.Windows.Forms
 
 Module MainModule
 
-    Dim frmCopyProps As System.Windows.Forms.Form
-    Public vsoApp As Visio.Application = Globals.ThisAddIn.Application
+    Friend frmCopyProps As System.Windows.Forms.Form
+    Friend vsoApp As Visio.Application = Globals.ThisAddIn.Application
+    Friend csWin() As Integer = {0, 0, 0, 0}
 
-    Public Sub Load_frmCopyProps()
-        frmCopyProps = New dlgCopyProps
-        frmCopyProps.Show()
-    End Sub
 End Module
