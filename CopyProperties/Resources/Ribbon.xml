@@ -5,7 +5,14 @@
       <tab idMso="TabDeveloper">
         <group id="Group1" label="Copy Properties">
 
-          <button id="Command2" size="large" label="Копировать свойства фигуры" onAction="OnRibbonButtonClick" getEnabled="IsRibbonCommandEnabled" imageMso="ChartResetToMatchStyle"/>
+          <button id="Command2" 
+            size="large" 
+            label="Копировать свойства фигуры" 
+            onAction="OnRibbonButtonClick" 
+            getEnabled="IsRibbonCommandEnabled" 
+            imageMso="ChartResetToMatchStyle" 
+            screentip="Копировать свойства фигуры" 
+            supertip ="Перенос определенных свойств и данных из одной выделенной фигуры в другую/другие"/>
 
         </group>
       </tab>

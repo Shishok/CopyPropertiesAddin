@@ -9,17 +9,11 @@ Public Class dlgCopyProps
     Dim intActiveSection As Integer
 
     Private Sub dlgCopyProps_FormClosed(sender As Object, e As FormClosedEventArgs) Handles Me.FormClosed
-        csWin(0) = Me.Left : csWin(1) = Me.Top : csWin(2) = Me.Width : csWin(3) = Me.Height
+        SaveSettings(1)
         frmCopyProps = Nothing
     End Sub
 
     Private Sub dlgCopyProps_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        If csWin(0) <> 0 Then
-            Me.Left = csWin(0)
-            Me.Top = csWin(1)
-            Me.Width = csWin(2)
-            Me.Height = csWin(3)
-        End If
 
         Dim ctl As System.Windows.Forms.Control
         winObj = vsoApp.ActiveWindow
@@ -30,6 +24,7 @@ Public Class dlgCopyProps
             If InStr(1, ctl.Name, "ckb_", 1) <> 0 Then ctl.Enabled = CheckSection(ctl.Tag)
         Next
 
+        SaveSettings(0)
     End Sub
 
     Private Sub btn_OK_Click(sender As Object, e As EventArgs) Handles btn_OK.Click
@@ -277,6 +272,24 @@ err:
             .AccessibleDescription = s.AccessibleDescription
             .Text = s.text
         End With
+    End Sub
+
+    Private Sub SaveSettings(arg)
+        Const An As String = "CopyProperties", Sc As String = "Settings"
+        Select Case arg
+            Case 0
+                If GetSetting(AppName:=An, Section:=Sc, Key:="Top") <> "" Then
+                    Me.Top = GetSetting(AppName:=An, Section:=Sc, Key:="Top")
+                    Me.Left = GetSetting(AppName:=An, Section:=Sc, Key:="Left")
+                    Me.Height = GetSetting(AppName:=An, Section:=Sc, Key:="Height")
+                    Me.Width = GetSetting(AppName:=An, Section:=Sc, Key:="Width")
+                End If
+            Case 1
+                SaveSetting(AppName:=An, Section:=Sc, Key:="Top", Setting:=Me.Top)
+                SaveSetting(AppName:=An, Section:=Sc, Key:="Left", Setting:=Me.Left)
+                SaveSetting(AppName:=An, Section:=Sc, Key:="Height", Setting:=Me.Height)
+                SaveSetting(AppName:=An, Section:=Sc, Key:="Width", Setting:=Me.Width)
+        End Select
     End Sub
 
 #Region "Control's Events"
